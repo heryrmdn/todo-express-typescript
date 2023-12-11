@@ -1,25 +1,56 @@
 import { Request, Response } from "express";
 import IController from "./ControllerInterface";
+import TodoService from "../services/TodoService";
 
 class TodoController implements IController {
-    index(req: Request, res: Response): Response {
-        return res.send("index");
+    index = async (req: Request, res: Response): Promise<Response> => {
+        const service: TodoService = new TodoService(req);
+        const todos = await service.getAll();
+
+        return res.send({
+            data: todos,
+            message: ""
+        })
     }
 
-    create(req: Request, res: Response): Response {
-        return res.send("create");
+    create = async (req: Request, res: Response): Promise<Response> => {
+        const service: TodoService = new TodoService(req);
+        const todo = await service.store();
+
+        return res.send({
+            data: todo,
+            message: "todo created"
+        })
     }
 
-    show(req: Request, res: Response): Response {
-        return res.send("show");
+    show = async (req: Request, res: Response): Promise<Response> => {
+        const service: TodoService = new TodoService(req);
+        const todo = await service.getOne();
+
+        return res.send({
+            data: todo,
+            message: ""
+        })
     }
 
-    update(req: Request, res: Response): Response {
-        return res.send("update");
+    update = async (req: Request, res: Response): Promise<Response> => {
+        const service: TodoService = new TodoService(req);
+        const todo = await service.update();
+
+        return res.send({
+            data: todo,
+            message: "Todo updated"
+        })
     }
 
-    delete(req: Request, res: Response): Response {
-        return res.send("delete");
+    delete = async (req: Request, res: Response): Promise<Response> => {
+        const service: TodoService = new TodoService(req);
+        const todo = await service.delete();
+
+        return res.send({
+            data: todo,
+            message: "Todo deleted"
+        })
     }
 }
 
